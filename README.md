@@ -1,5 +1,5 @@
 # Guide to processing maps from GADM to make cartograms
-![Cartogram Prep Flowchart](Images/main.png?raw=true "Cartogram Preparation Flowchart")
+![Cartogram Prep Flowchart](Images/flowchart.png?raw=true "Cartogram Preparation Flowchart")
 This is the process for preparing map data to generate cartograms.
 
 ## Table Of Contents
