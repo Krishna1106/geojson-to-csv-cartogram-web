@@ -3,12 +3,15 @@ library(rgdal)
 # Note: This R script is optimised for maps from GADM
 
 # CHANGE GEOJSON FILE NAME HERE
-file = "aus_map.json"
+file = "japan.json"
 
-# CHANGE NAME OF THE REGION NAME PROPERTY HERE
+# CHANGE REGION NAME PROPERTY HERE
 # IF MAP FROM GADM, DON'T CHANGE
-nameproperty = "STATE_NAME"
+nameproperty = "NAME_1"
 
+# CHANGE REGION ABBREVIATION PROPERTY HERE
+# IF MAP FROM GADM, DON'T CHANGE
+abbrproperty = "HASC_1"
 
 ########################################################################################
 
@@ -16,10 +19,17 @@ nameproperty = "STATE_NAME"
 cat("Loading geojson file ........ \n")
 feature_collection <- readOGR(dsn = file, stringsAsFactors = FALSE)
 
-file_name = gsub("\\..*$", '', file)
+file_name = gsub("\\.json$", '', file)
+file_name = gsub("\\.geojson$", '', file_name)
 
 if((is.null(feature_collection$name[1]) == FALSE || is.null(feature_collection$NAME_1[1]) == FALSE || is.null(eval(parse(text = paste0("feature_collection$", nameproperty, "[1]")))) == FALSE) == FALSE){
-  cat("Error: Unable to find region name property. Please check the geojson file and amend the variable \"nameproperty\".")
+  cat("\n\nERROR: Unable to find region names. Please check below:\n\n")
+  cat("[Property]: [Value for first region]\n")
+  for(i in 1: ncol(feature_collection@data)){
+    cat(names(feature_collection@data)[i], ": ", feature_collection@data[1,i], "\n", sep = '')
+  }
+  rm(i)
+  cat("\nCheck which property contains the region name and amend the variable \"nameproperty\" accordingly.\n")
 }else{
   if(is.null(feature_collection$NAME_0[1]) == FALSE){
     country = feature_collection$NAME_0[1]
@@ -42,10 +52,23 @@ if((is.null(feature_collection$name[1]) == FALSE || is.null(feature_collection$N
   region_order = seq(1, length(feature_collection), 1)
   region_id = rep('', length(feature_collection))
   region_data = rep('', length(feature_collection))
+  abbr = TRUE
+  # Finds "HASC_1" property, extracts the region abbreviation and saves in the data frame
+  if(is.null(feature_collection$HASC_1[1]) == FALSE){
+    region_abbreviation = feature_collection$HASC_1
+    region_abbreviation = gsub("^.*\\.", '', region_abbreviation)
+  # If not, find the abbrproperty inputted by the user
+  }else if(is.null(eval(parse(text = paste0("feature_collection$", abbrproperty, "[1]")))) == FALSE){
+    eval(parse(text = paste0("region_abbreviation = feature_collection$", abbrproperty)))
+  # If not, just leave it blank
+  }else{
+    region_abbreviation = rep('', length(feature_collection))
+    abbr = FALSE
+  }
   
   # Creates data frame 
-  df = data.frame(region_order, region_id, region_data, region_name)
-  colnames(df) = c("Region.Order", "Region.Id", "Region.Data", "Region.Name")
+  df = data.frame(region_order, region_id, region_data, region_name, region_abbreviation)
+  colnames(df) = c("Region.Order", "Region.Id", "Region.Data", "Region.Name", "Region.Abbreviation")
   
   # Sorts data frame according to region name and makes sure that region id will also follow that order
   df = df[order(region_name),]
@@ -57,14 +80,6 @@ if((is.null(feature_collection$name[1]) == FALSE || is.null(feature_collection$N
   
   # Creates cartogram_id property
   feature_collection@data$cartogram_id = region_id
-
-  # Finds "HASC_1" property, extracts the region abbreviation and saves in the data frame
-  if(is.null(feature_collection$HASC_1[1]) == FALSE){
-    region_abbreviation = feature_collection$HASC_1
-    region_abbreviation = gsub("^.*\\.", '', region_abbreviation)
-    df$Region.Abbrievation = region_abbreviation
-    rm(region_abbreviation)
-  }
   
   # Finds "GID_0" property for the 1st region (i.e. country acronym) and saves it as country
   if(is.null(feature_collection$GID_0[1]) == FALSE){
@@ -96,12 +111,15 @@ if((is.null(feature_collection$name[1]) == FALSE || is.null(feature_collection$N
     cat("Added in bbox information.\n")
     rm(bbox)
     rm(jsontxt)
+    cat("\nAll done.\n")
   }else{
     cat("Error: geojson file does not contain bbox information. Cartogram generator requires bbox information.\n")
   }
+  if(abbr == FALSE){
+    cat("\nWarning: csv file does not contain region abbreviations. If the json file does contain the abbreviation info, please amend the \"abbrproperty\" variable and re-run this program. You can check for the property below:")
+  }
   
   # Removes variables
-  rm(df, region_data, region_id, region_name, jsonfile, region_order)
+  rm(df, region_data, region_id, region_name, jsonfile, region_order, region_abbreviation, abbrproperty, abbr)
 }
 rm(feature_collection, file_name, file, nameproperty)
-cat("\nAll done.\n")
