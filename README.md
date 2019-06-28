@@ -104,15 +104,15 @@ $ -o format=geojson bbox precision=0.1 [country_name]_map.json
 ## Step 3: Generate CSV and JSON file
 Open `geojson2csv.r` in RStudio. Make sure that the GeoJSON file which you just downloaded is in the same folder as `geojson2csv.r`. Rename `file_name` accordingly. Then, click on source. In the console, it should say "Exported [country]_processedmap.json" and "Exported [country]_data.csv".
 
-![R Script](Images/11.png?raw=true "R Script")
+![R Script](Images/r1.png?raw=true "R Script")
 
 You will be able to find `[country]_data.csv` in your folder. Here, you should check whether the region names are accurate. Open the csv file using a text editor or spreadsheet program, and make sure that you save in the csv format subsequently. Fill in the `Region.Data` column with something other than population.
 
-![CSV file](Images/13.png?raw=true "CSV File")
+![CSV file](Images/r2.png?raw=true "CSV File")
 
 After saving, you now have your **`[country]_processedmap.json` and `[country]_data.csv` files** ready to use to generate cartograms!
 
-![Files](Images/16.png?raw=true "Files")
+![Files](Images/r3.png?raw=true "Files")
 
 Please proceed to the [Add Map Guide](https://github.com/jansky/cartogram-web/blob/master/doc/addmap/addmap.md) to continue the process.
 
