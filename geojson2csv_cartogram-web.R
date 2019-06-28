@@ -1,3 +1,5 @@
+# VERSION 2019-06-29
+
 library(rgdal)
 
 # Note: This R script is optimised for maps from GADM
