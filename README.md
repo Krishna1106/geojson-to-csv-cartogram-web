@@ -95,12 +95,12 @@ You can now press enter. Download the SVG file and check the bounding box again.
 ![Inkscape](Images/jpn10.png?raw=true "Inkscape")
 
 ### Step 2.4: Export
-Export the map using the following command, replacing `[country_name]` accordingly.
+In Mapshaper, export the map using the following command, replacing `[country_name]` accordingly.
 ```
 $ -o format=geojson bbox precision=0.1 [country_name].json
 ```
 ## Step 3: Generate CSV and JSON file
-Open `geojson2csv_cartogram-web.r` in RStudio. Make sure that the GeoJSON file which you just downloaded is in the same folder as `geojson2csv.r`. Rename `file_name` accordingly. Then, click on source. In the console, it should say "All done.".
+Open `geojson2csv_cartogram-web.r` in RStudio. Make sure that the GeoJSON file which you just downloaded is in the same folder. Rename `file_name` accordingly. Then, click on source. In the console, it should say "All done.".
 
 ![R Script](Images/r1.png?raw=true "R Script")
 
