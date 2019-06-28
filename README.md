@@ -104,7 +104,7 @@ Open `geojson2csv_cartogram-web.r` in RStudio. Make sure that the GeoJSON file w
 
 ![R Script](Images/r1.png?raw=true "R Script")
 
-You will be able to find `[country]_data.csv` in your folder. Here, you should check whether the region names are accurate. Open the csv file using a text editor or spreadsheet program, and make sure that you save in the csv format subsequently. Fill in the `Region.Data` column with something other than population.
+You will be able to find `[country]_data.csv` in your folder. Here, you should check whether the region names are accurate. Open the csv file using a text editor or spreadsheet program, and make sure that you save in the csv format subsequently. Fill in the `Region.Data` column with something other than population. At this stage, you should also check whether the region names and abbreviations are correct by comparing with an official source. Editing the names/abbreviations in the csv file is sufficient to correct any typos.
 
 ![CSV File](Images/r3.png?raw=true "CSV File")
 
