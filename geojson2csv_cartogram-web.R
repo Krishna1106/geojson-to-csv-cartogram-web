@@ -80,6 +80,9 @@ if((is.null(feature_collection$name[1]) == FALSE || is.null(feature_collection$N
   df$Region.Order = NULL
   df = df[order(df$Region.Name),]
   
+  # Rename column names
+  colnames(df) = c("Region Id", "Region Data", "Region Name", "Region Abbreviation")
+  
   # Creates cartogram_id property
   feature_collection@data$cartogram_id = region_id
   
